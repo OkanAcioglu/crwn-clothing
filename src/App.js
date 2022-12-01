@@ -1,3 +1,5 @@
+import './categories.styles.scss'
+
 const App = () => {
   const categories = [
     {
@@ -24,8 +26,8 @@ const App = () => {
 
   return (
     <div className='categories-container'>
-      {categories.map(({ title }) => (
-        <div className='category-container'>
+      {categories.map(({ title, id }) => (
+        <div key={id} className='category-container'>
           <div className='background-image' />
           <div className='category-body-container'>
             <h2>{title}</h2>
@@ -33,41 +35,6 @@ const App = () => {
           </div>
         </div>
       ))}
-      {/* <div className='category-container'>
-        <img />
-        <div className='category-body-container'>
-          <h2>Hats</h2>
-          <p>Shop Now</p>
-        </div>
-      </div>
-      <div className='category-container'>
-        <img />
-        <div className='category-body-container'>
-          <h2>Jackets</h2>
-          <p>Shop Now</p>
-        </div>
-      </div>
-      <div className='category-container'>
-        <img />
-        <div className='category-body-container'>
-          <h2>Sneakers</h2>
-          <p>Shop Now</p>
-        </div>
-      </div>
-      <div className='category-container'>
-        <img />
-        <div className='category-body-container'>
-          <h2>Womens</h2>
-          <p>Shop Now</p>
-        </div>
-      </div>
-      <div className='category-container'>
-        <img />
-        <div className='category-body-container'>
-          <h2>Mans</h2>
-          <p>Shop Now</p>
-        </div>
-      </div> */}
     </div>
   )
 }
