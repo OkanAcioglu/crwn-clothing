@@ -9,7 +9,7 @@ const SignIn = () => {
     //console.log(response)
     //! We want response.user object
     const { user } = await signInWithGooglePopup()
-    createUserDocumentFromAuth(user)
+    const userDocRef = await createUserDocumentFromAuth(user)
   }
 
   return (

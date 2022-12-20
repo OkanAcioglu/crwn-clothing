@@ -51,4 +51,19 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   const userSnapShot = await getDoc(userDocRef)
   console.log(userSnapShot) // new document snap shot --> points to same identifier --> but this is a special object --> on this object we can check whether or not document exist... ( for now we know it doesnt)
   console.log(userSnapShot.exists())
+
+  // if user data does not exist
+  if (!userSnapShot.exists()) {
+    // create/set the document with the data from userAuth in the collection
+    const { displayName, email } = userAuth
+    const createdAt = new Date()
+    try {
+      await setDoc(userDocRef, { displayName, email, createdAt })
+    } catch (error) {
+      console.log('error creating the user', error.message)
+    }
+  }
+  //check if user data exist --> above if block will not be executed
+  // return userDocRef
+  return userDocRef
 }
