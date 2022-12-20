@@ -24,14 +24,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig)
 
-const provider = new GoogleAuthProvider()
-provider.setCustomParameters({
+const googleProvider = new GoogleAuthProvider()
+googleProvider.setCustomParameters({
   prompt: 'select_account',
 })
 
 export const auth = getAuth()
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider)
-
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
+//! below we named as signInWithGoogleRedirect because provider instantiated as classes (with Google). These providers can be for example Facebook provider and there is multiple providers available...
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider)
 // create database --> db will directly points database
 export const db = getFirestore()
 
