@@ -8,6 +8,8 @@ import {
   createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils'
 
+import SignUpForm from '../../components/sign-up-form/sign-up-form.component'
+
 const SignIn = () => {
   //! what useEffect does when app comeback from redirect and re-initialize get me the response from redirect that just happened based on the auth
   //! Think auth as some kind of authentication memory bank tracking all of our auth process
@@ -45,6 +47,7 @@ const SignIn = () => {
       {/* <button onClick={signInWithGoogleRedirect}>
         Sign in with Google Redirect
       </button> */}
+      <SignUpForm />
     </div>
   )
 }

@@ -4,6 +4,8 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  // for sign-up with email and password
+  createUserWithEmailAndPassword,
 } from 'firebase/auth'
 
 // import Firestore services
@@ -39,7 +41,10 @@ export const db = getFirestore()
 
 // create a function which is async and receives user authentication object that what we are get back from firebase authentication
 // function will take data (getting from auth service) and store that inside of firestore
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
   //! whether there is existing document reference
   //! reference is a special type of object that firestore uses when talking about actual instance of a document modal
   //* 3 arguments of doc
@@ -47,6 +52,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   //2 collections --> we gonna call it users collection
   //3 identifier --> unique id (When we look the response (user object that comes with access token) when we signInWithGooglePopup there is a uid which is "unique id identifier". We will use this uid... )
   //!!! Right now we are creating user instance inside the firestorm. We never done that before and we will use that userAuth.uid... İt is interesting that Google Firestorm ,eventhough we do not have a document reference inside our database (we do not even have a user collection), generate the object for us... But when invoke the createUserDocumentFromAuth function into the sign-in component with user argument we see a object in the console. This object is actually the object that represents some document reference in the database. However we do not have a value but in the object there is uid we just used and the path that points to the collection of users. But we know that nothing exist there(no data we can get from there). Why Google create this for us? Because this reference points to the some unique point inside of the database. Google wants us to use this specific document reference object that they provided us in order to set data there because it is already pointing to the some place inside of our database.
+  if (!userAuth) return
   const userDocRef = doc(db, 'users', userAuth.uid) // give me the document reference, inside of the database, under the user collection, with the userAuth.uid
   console.log(userDocRef)
   //? userSnapShot --> kind of data , also the specific kind of object...
@@ -60,7 +66,12 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     const { displayName, email } = userAuth
     const createdAt = new Date()
     try {
-      await setDoc(userDocRef, { displayName, email, createdAt })
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalInformation,
+      })
     } catch (error) {
       console.log('error creating the user', error.message)
     }
@@ -68,4 +79,10 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   //check if user data exist --> above if block will not be executed
   // return userDocRef
   return userDocRef
+}
+//! Below what we made is Authenticated user. This is not necessarily a user document inside of our firestore instance
+//!
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return
+  return await createUserWithEmailAndPassword(auth, email, password)
 }
